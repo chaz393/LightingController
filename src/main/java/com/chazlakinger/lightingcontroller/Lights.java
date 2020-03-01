@@ -9,6 +9,7 @@ class Lights {
     String turnLightsOn() {
         lightsStatus = true;
         lockStatus = false;
+        sunsetStatus = UtilLighting.isAfterSunset();
         return UtilLighting.turnLightsOn();
     }
 
