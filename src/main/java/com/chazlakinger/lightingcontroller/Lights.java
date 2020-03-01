@@ -56,9 +56,11 @@ class Lights {
 
     void lockLights() {
         lockStatus = true;
+        System.out.println("lights locked");
     }
 
     void unLockLights() {
         lockStatus = false;
+        System.out.println("lights unlocked");
     }
 }

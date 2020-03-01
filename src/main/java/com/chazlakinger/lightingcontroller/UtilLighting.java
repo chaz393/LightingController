@@ -20,13 +20,13 @@ class UtilLighting {
         Integer sunriseTime = (Integer) sys.get("sunrise");
 
         if (currentTime > sunsetTime) {
-            System.out.println("after sunset but before midnight");
+            System.out.println("currently after sunset but before midnight");
             return true;
         } else if (currentTime < sunriseTime) {
-            System.out.println("after midnight but before sunrise");
+            System.out.println("currently after midnight but before sunrise");
             return true;
         } else {
-            System.out.println("day time");
+            System.out.println("currently day time");
             return false;
         }
     }
@@ -40,18 +40,21 @@ class UtilLighting {
     }
 
     static String turnLightsOff() {
+        System.out.println("lights turned off");
         final String uri = "https://maker.ifttt.com/trigger/all_off/with/key/" + ApiKeys.ifttt;
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(uri, null, String.class);
     }
 
     static String turnToSunset() {
+        System.out.println("lights turned to sunset");
         final String uri = "https://maker.ifttt.com/trigger/sunset/with/key/" + ApiKeys.ifttt;
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(uri, null, String.class);
     }
 
     static String turnToDaytime() {
+        System.out.println("lights turned to daytime");
         final String uri = "https://maker.ifttt.com/trigger/daytime/with/key/" + ApiKeys.ifttt;
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(uri, null, String.class);
