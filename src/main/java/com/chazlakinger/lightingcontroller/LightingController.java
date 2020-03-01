@@ -1,0 +1,61 @@
+package com.chazlakinger.lightingcontroller;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class LightingController {
+
+    private Lights lights = new Lights();
+
+    @PostMapping(path = "/turnLightsOn", produces = "text/plain")
+    public String turnLightsOn() {
+        return lights.turnLightsOn();
+    }
+
+    @PostMapping(path = "/turnLightsOff", produces = "text/plain")
+    public String turnLightsOff() {
+        return lights.turnLightsOff();
+    }
+
+    @PostMapping(path = "/turnToSunset", produces = "text/plain")
+    public String turnToSunset() {
+        return lights.turnToSunset(false);
+    }
+
+    @PostMapping(path = "/turnToDaytime", produces = "text/plain")
+    public String turnToDaytime() {
+        return lights.turnToDaytime(false);
+    }
+
+    @PostMapping(path = "/updateLightsIfOn", produces = "text/plain")
+    public String updateLightsIfOn() {
+        return lights.updateLightsIfOn();
+    }
+
+    @PostMapping(path = "/morningTask", produces = "text/plain")
+    public String morningTask() {
+        return lights.morningTask();
+    }
+
+    @PostMapping(path = "/lockLights")
+    public void  lockLights() {
+        lights.lockLights();
+    }
+
+    @PostMapping(path = "/unLockLights")
+    public void  unLockLights() {
+        lights.unLockLights();
+    }
+
+    @PostMapping(path = "/turnToSunsetAndLockLights", produces = "text/plain")
+    public String turnToSunsetAndLockLights() {
+        return lights.turnToSunset(true);
+    }
+
+    @PostMapping(path = "/turnToDaytimeAndLockLights", produces = "text/plain")
+    public String turnToDaytimeAndLockLights() {
+        return lights.turnToDaytime(true);
+    }
+
+}
