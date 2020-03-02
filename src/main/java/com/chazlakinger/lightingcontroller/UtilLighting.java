@@ -6,6 +6,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+import static java.lang.System.currentTimeMillis;
+
 class UtilLighting {
 
     static boolean isAfterSunset() {
@@ -15,9 +17,11 @@ class UtilLighting {
         JsonParser springParser = JsonParserFactory.getJsonParser();
         Map<String, Object> parsedResult = springParser.parseMap(result);
         Map<String, Object> sys = (Map<String, Object>) parsedResult.get("sys");
-        Integer currentTime = (Integer) parsedResult.get("dt");
         Integer sunsetTime = (Integer) sys.get("sunset");
         Integer sunriseTime = (Integer) sys.get("sunrise");
+        Long currentTime = currentTimeMillis()/1000;
+
+        System.out.println("current time: " + currentTime + ", sunset time: " + sunsetTime + ", sunrise time: " + sunriseTime);
 
         if (currentTime > sunsetTime) {
             System.out.println("currently after sunset but before midnight");
