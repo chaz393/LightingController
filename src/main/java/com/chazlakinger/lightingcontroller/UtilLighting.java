@@ -44,23 +44,106 @@ class UtilLighting {
     }
 
     static String turnLightsOff() {
-        System.out.println("lights turned off");
-        final String uri = "https://maker.ifttt.com/trigger/all_off/with/key/" + ApiKeys.ifttt;
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(uri, null, String.class);
+        System.out.println("lights turning off");
+        if (switch1Off() && switch2Off() && iftttOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
     }
 
     static String turnToSunset() {
-        System.out.println("lights turned to sunset");
-        final String uri = "https://maker.ifttt.com/trigger/sunset/with/key/" + ApiKeys.ifttt;
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(uri, null, String.class);
+        System.out.println("lights turning to sunset");
+        if (switch1Off() && switch2Off() && iftttSunset()) {
+            return "success";
+        } else {
+            return "error";
+        }
     }
 
     static String turnToDaytime() {
-        System.out.println("lights turned to daytime");
+        System.out.println("lights turning to daytime");
+        if (switch1On() && switch2On() && iftttDaytime()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnRoomLightsOn() {
+        if (switch1On() && switch2On()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnRoomLightsOff() {
+        if (switch1Off() && switch2Off()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String lowLightDaytime() {
+        if (switch1On() && switch2On() && iftttSunset()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+
+
+    private static Boolean iftttOff() {
+        final String uri = "https://maker.ifttt.com/trigger/all_off/with/key/" + ApiKeys.ifttt;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.equals("Congratulations! You've fired the all_off event");
+    }
+
+    private static Boolean iftttSunset() {
+        final String uriIfttt = "https://maker.ifttt.com/trigger/sunset/with/key/" + ApiKeys.ifttt;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uriIfttt, null, String.class);
+        return response != null && response.equals("Congratulations! You've fired the sunset event");
+    }
+
+    private static Boolean iftttDaytime() {
         final String uri = "https://maker.ifttt.com/trigger/daytime/with/key/" + ApiKeys.ifttt;
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(uri, null, String.class);
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.equals("Congratulations! You've fired the daytime event");
+    }
+
+
+
+    private static Boolean switch1On() {
+        final String uri = "http://192.168.70.24/cm?cmnd=Power on";
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean switch1Off() {
+        final String uri = "http://192.168.70.24/cm?cmnd=Power off";
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean switch2On() {
+        final String uri = "http://192.168.70.25/cm?cmnd=Power on";
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean switch2Off() {
+        final String uri = "http://192.168.70.25/cm?cmnd=Power off";
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
     }
 }

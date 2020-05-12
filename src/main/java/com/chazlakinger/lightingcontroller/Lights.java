@@ -64,4 +64,22 @@ class Lights {
         lockStatus = false;
         System.out.println("lights unlocked");
     }
+
+    String turnRoomLightsOn(Boolean lockLights) {
+        lightsStatus = true;
+        lockStatus = lockLights;
+        return UtilLighting.turnRoomLightsOn();
+    }
+
+    String turnRoomLightsOff(Boolean lockLights) {
+        lightsStatus = false;
+        lockStatus = lockLights;
+        return UtilLighting.turnRoomLightsOff();
+    }
+
+    String lowLightDaytime() {
+        lightsStatus = true;
+        lockStatus = true;
+        return UtilLighting.lowLightDaytime();
+    }
 }
