@@ -67,6 +67,7 @@ class Lights {
 
     String turnRoomLightsOn(Boolean lockLights) {
         lightsStatus = true;
+        sunsetStatus = false;
         lockStatus = lockLights;
         return UtilLighting.turnRoomLightsOn();
     }
@@ -79,6 +80,7 @@ class Lights {
 
     String lowLightDaytime() {
         lightsStatus = true;
+        sunsetStatus = false;
         lockStatus = true;
         return UtilLighting.lowLightDaytime();
     }
