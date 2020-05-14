@@ -3,6 +3,7 @@ package com.chazlakinger.lightingcontroller;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.web.client.RestTemplate;
+import sun.nio.ch.Net;
 
 import java.util.Map;
 
@@ -45,7 +46,7 @@ class UtilLighting {
 
     static String turnLightsOff() {
         System.out.println("lights turning off");
-        if (switch1Off() && switch2Off() && iftttOff()) {
+        if (switchMainOff() && switchSecondaryOff() && plugNightstandOff() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff()) {
             return "success";
         } else {
             return "error";
@@ -54,7 +55,7 @@ class UtilLighting {
 
     static String turnToSunset() {
         System.out.println("lights turning to sunset");
-        if (switch1Off() && switch2Off() && iftttSunset()) {
+        if (switchMainOff() && switchSecondaryOff() && plugNightstandOn() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff()) {
             return "success";
         } else {
             return "error";
@@ -63,7 +64,7 @@ class UtilLighting {
 
     static String turnToDaytime() {
         System.out.println("lights turning to daytime");
-        if (switch1On() && switch2On() && iftttDaytime()) {
+        if (switchMainOn() && switchSecondaryOn() && plugNightstandOff() && plugBedLampOn() && plugDeskLampOn() && plugSideLampOn()) {
             return "success";
         } else {
             return "error";
@@ -71,7 +72,7 @@ class UtilLighting {
     }
 
     static String turnRoomLightsOn() {
-        if (switch1On() && switch2On()) {
+        if (switchMainOn() && switchSecondaryOn()) {
             return "success";
         } else {
             return "error";
@@ -79,7 +80,7 @@ class UtilLighting {
     }
 
     static String turnRoomLightsOff() {
-        if (switch1Off() && switch2Off()) {
+        if (switchMainOff() && switchSecondaryOff()) {
             return "success";
         } else {
             return "error";
@@ -87,7 +88,7 @@ class UtilLighting {
     }
 
     static String lowLightDaytime() {
-        if (switch1On() && switch2On() && iftttSunset()) {
+        if (switchMainOn() && switchSecondaryOn() && plugNightstandOn() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff()) {
             return "success";
         } else {
             return "error";
@@ -96,54 +97,88 @@ class UtilLighting {
 
 
 
-    private static Boolean iftttOff() {
-        final String uri = "https://maker.ifttt.com/trigger/all_off/with/key/" + ApiKeys.ifttt;
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(uri, null, String.class);
-        return response != null && response.equals("Congratulations! You've fired the all_off event");
-    }
-
-    private static Boolean iftttSunset() {
-        final String uriIfttt = "https://maker.ifttt.com/trigger/sunset/with/key/" + ApiKeys.ifttt;
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(uriIfttt, null, String.class);
-        return response != null && response.equals("Congratulations! You've fired the sunset event");
-    }
-
-    private static Boolean iftttDaytime() {
-        final String uri = "https://maker.ifttt.com/trigger/daytime/with/key/" + ApiKeys.ifttt;
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(uri, null, String.class);
-        return response != null && response.equals("Congratulations! You've fired the daytime event");
-    }
-
-
-
-    private static Boolean switch1On() {
-        final String uri = "http://192.168.70.24/cm?cmnd=Power on";
+    private static Boolean switchMainOn() {
+        final String uri = Networking.baseUri + Networking.switchMainIp + Networking.onUri;
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(uri, null, String.class);
         return response != null && response.contains("POWER") && response.contains("ON");
     }
 
-    private static Boolean switch1Off() {
-        final String uri = "http://192.168.70.24/cm?cmnd=Power off";
+    private static Boolean switchMainOff() {
+        final String uri = Networking.baseUri + Networking.switchMainIp + Networking.offUri;
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(uri, null, String.class);
         return response != null && response.contains("POWER") && response.contains("OFF");
     }
 
-    private static Boolean switch2On() {
-        final String uri = "http://192.168.70.25/cm?cmnd=Power on";
+    private static Boolean switchSecondaryOn() {
+        final String uri = Networking.baseUri + Networking.switchSecondaryIp + Networking.onUri;
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(uri, null, String.class);
         return response != null && response.contains("POWER") && response.contains("ON");
     }
 
-    private static Boolean switch2Off() {
-        final String uri = "http://192.168.70.25/cm?cmnd=Power off";
+    private static Boolean switchSecondaryOff() {
+        final String uri = Networking.baseUri + Networking.switchSecondaryIp + Networking.offUri;
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(uri, null, String.class);
         return response != null && response.contains("POWER") && response.contains("OFF");
     }
+
+    private static Boolean plugNightstandOn() {
+        final String uri = Networking.baseUri + Networking.plugNightstandIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean plugNightstandOff() {
+        final String uri = Networking.baseUri + Networking.plugNightstandIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean plugBedLampOn() {
+        final String uri = Networking.baseUri + Networking.plugBedLampIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean plugBedLampOff() {
+        final String uri = Networking.baseUri + Networking.plugBedLampIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean plugDeskLampOn() {
+        final String uri = Networking.baseUri + Networking.plugDeskLampIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean plugDeskLampOff() {
+        final String uri = Networking.baseUri + Networking.plugDeskLampIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean plugSideLampOn() {
+        final String uri = Networking.baseUri + Networking.plugSideLampIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean plugSideLampOff() {
+        final String uri = Networking.baseUri + Networking.plugSideLampIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
 }
