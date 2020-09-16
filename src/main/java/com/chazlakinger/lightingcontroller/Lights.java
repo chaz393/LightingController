@@ -52,7 +52,7 @@ class Lights {
     String morningTask() {
         lightsStatus = true;
         lockStatus = true;
-        return UtilLighting.turnToSunset();
+        return UtilLighting.morningTask();
     }
 
     void lockLights() {
@@ -83,5 +83,27 @@ class Lights {
         sunsetStatus = false;
         lockStatus = true;
         return UtilLighting.lowLightDaytime();
+    }
+
+    String turnHallLampOn() {
+        return UtilLighting.turnHallLampOn();
+    }
+
+    String turnHallLampOff() {
+        return UtilLighting.turnHallLampOff();
+    }
+
+    String nightTask() {
+        lightsStatus = false;
+        lockStatus = false;
+        return UtilLighting.nightTask();
+    }
+
+    String turnChazBthFanOn() {
+        return UtilLighting.turnChazBthFanOn();
+    }
+
+    String turnChazBthFanOff() {
+        return UtilLighting.turnChazBthFanOff();
     }
 }

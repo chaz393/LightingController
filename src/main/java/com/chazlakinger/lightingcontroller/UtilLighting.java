@@ -3,7 +3,6 @@ package com.chazlakinger.lightingcontroller;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.web.client.RestTemplate;
-import sun.nio.ch.Net;
 
 import java.util.Map;
 
@@ -55,7 +54,7 @@ class UtilLighting {
 
     static String turnToSunset() {
         System.out.println("lights turning to sunset");
-        if (switchMainOff() && switchSecondaryOff() && plugNightstandOn() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff()) {
+        if (switchMainOff() && switchSecondaryOff() && plugNightstandOn() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff() && plugHallLampOn()) {
             return "success";
         } else {
             return "error";
@@ -95,6 +94,55 @@ class UtilLighting {
         }
     }
 
+    static String turnHallLampOn() {
+        if (plugHallLampOn()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnHallLampOff() {
+        if (plugHallLampOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String nightTask() {
+        System.out.println("night task, lights turning off");
+        if (switchMainOff() && switchSecondaryOff() && plugNightstandOff() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff() && plugHallLampOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String morningTask() {
+        System.out.println("morning task");
+        if (switchMainOff() && switchSecondaryOff() && plugNightstandOn() && plugBedLampOff() && plugDeskLampOff() && plugSideLampOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnChazBthFanOn() {
+        if (switchChazBthFanOn()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnChazBthFanOff() {
+        if (switchChazBthFanOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
 
 
     private static Boolean switchMainOn() {
@@ -181,4 +229,31 @@ class UtilLighting {
         return response != null && response.contains("POWER") && response.contains("OFF");
     }
 
+    private static Boolean plugHallLampOn() {
+        final String uri = Networking.baseUri + Networking.plugHallLampIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean plugHallLampOff() {
+        final String uri = Networking.baseUri + Networking.plugHallLampIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean switchChazBthFanOn() {
+        final String uri = Networking.baseUri + Networking.switchChazBthFanIp + Networking.onUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("ON");
+    }
+
+    private static Boolean switchChazBthFanOff() {
+        final String uri = Networking.baseUri + Networking.switchChazBthFanIp + Networking.offUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("POWER") && response.contains("OFF");
+    }
 }

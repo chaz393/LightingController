@@ -83,4 +83,28 @@ public class LightingController {
         return lights.lowLightDaytime();
     }
 
+    @PostMapping(path = "/turnHallLampOn", produces = "text/plain")
+    public String turnHallLampOn() {
+        return lights.turnHallLampOn();
+    }
+
+    @PostMapping(path = "/turnHallLampOff", produces = "text/plain")
+    public String turnHallLampOff() {
+        return lights.turnHallLampOff();
+    }
+
+    @PostMapping(path = "/nightTask", produces = "text/plain")
+    public String nightTask() {
+        return lights.nightTask();
+    }
+
+    @PostMapping(path = "/turnChazBthFanOn", produces = "text/plain")
+    public String turnChazBthFanOn() {
+        return lights.turnChazBthFanOn();
+    }
+
+    @PostMapping(path = "/turnChazBthFanOff", produces = "text/plain")
+    public String turnChazBthFanOff() {
+        return lights.turnChazBthFanOff();
+    }
 }
