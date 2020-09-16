@@ -107,4 +107,9 @@ public class LightingController {
     public String turnChazBthFanOff() {
         return lights.turnChazBthFanOff();
     }
+
+    @PostMapping(path = "/turnChazBthFanOn5Min", produces = "text/plain")
+    public String turnChazBthFanOn5Min() {
+        return lights.turnChazBthFanOn5Min();
+    }
 }

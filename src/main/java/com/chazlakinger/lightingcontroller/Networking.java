@@ -14,5 +14,6 @@ public class Networking {
     static String baseUri = "http://";
     static String onUri = "/cm?cmnd=Power on";
     static String offUri = "/cm?cmnd=Power off";
-
+    static String pulseTime5MinUri = "/cm?cmnd=PulseTime 400";
+    static String pulseTimeOffUri = "/cm?cmnd=PulseTime 0";
 }

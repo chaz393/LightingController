@@ -106,4 +106,8 @@ class Lights {
     String turnChazBthFanOff() {
         return UtilLighting.turnChazBthFanOff();
     }
+
+    String turnChazBthFanOn5Min() {
+        return UtilLighting.turnChazBthFanOn5Min();
+    }
 }

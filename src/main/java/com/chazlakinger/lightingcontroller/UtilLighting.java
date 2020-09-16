@@ -129,7 +129,7 @@ class UtilLighting {
     }
 
     static String turnChazBthFanOn() {
-        if (switchChazBthFanOn()) {
+        if (switchChazBthFanOn() && switchChazBthFanPulseTimeOff()) {
             return "success";
         } else {
             return "error";
@@ -137,7 +137,15 @@ class UtilLighting {
     }
 
     static String turnChazBthFanOff() {
-        if (switchChazBthFanOff()) {
+        if (switchChazBthFanOff() && switchChazBthFanPulseTimeOff()) {
+            return "success";
+        } else {
+            return "error";
+        }
+    }
+
+    static String turnChazBthFanOn5Min() {
+        if (switchChazBthFanOn() && switchChazBthFanPulseTime5Min()) {
             return "success";
         } else {
             return "error";
@@ -255,5 +263,19 @@ class UtilLighting {
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.postForObject(uri, null, String.class);
         return response != null && response.contains("POWER") && response.contains("OFF");
+    }
+
+    private static Boolean switchChazBthFanPulseTime5Min() {
+        final String uri = Networking.baseUri + Networking.switchChazBthFanIp + Networking.pulseTime5MinUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("PulseTime1") && response.contains("400");
+    }
+
+    private static Boolean switchChazBthFanPulseTimeOff() {
+        final String uri = Networking.baseUri + Networking.switchChazBthFanIp + Networking.pulseTimeOffUri;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(uri, null, String.class);
+        return response != null && response.contains("PulseTime1") && response.contains("0");
     }
 }
